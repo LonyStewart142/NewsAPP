@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:newsprovider/src/pages/login_page.dart';
+import 'package:newsprovider/src/pages/registro_page.dart';
 import 'package:newsprovider/src/pages/tabs_page.dart';
 import 'package:newsprovider/src/services/news_service.dart';
 import 'package:newsprovider/src/theme/tema.dart';
@@ -17,9 +19,11 @@ class MyApp extends StatelessWidget {
           title: 'Material App',
           debugShowCheckedModeBanner: false,
           theme: miTema,
-          initialRoute: '/',
+          initialRoute: 'login',
           routes: {
-            '/' : (BuildContext context) => TabsPage()
+            '/' : (BuildContext context) => TabsPage(),
+            'login' : (BuildContext context) => LoginPage(),
+            'registro' : (BuildContext context) => RegistroPage()
           },
       ),
     );

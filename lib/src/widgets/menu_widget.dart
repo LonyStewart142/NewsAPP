@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newsprovider/src/pages/tabs_page.dart';
 import 'package:newsprovider/src/theme/tema.dart';
+import 'package:newsprovider/src/utils/utils.dart';
 
 
 class MenuWidget extends StatelessWidget {
@@ -120,8 +121,7 @@ class _Fondo extends StatelessWidget {
     );
   }
 
-  List<int> getRGB(Color c) {
-  return [c.red,c.green, c.blue];
+
 }
 
 _crearCirculo(){
@@ -135,5 +135,4 @@ return Container(
        color: Color.fromRGBO(cTema[0], cTema[1], cTema[2], rnd.nextDouble()*0.80)
      ),
    );
-}
 }
