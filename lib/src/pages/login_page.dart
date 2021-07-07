@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newsprovider/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:newsprovider/src/services/usuario_service.dart';
 import 'package:newsprovider/src/steams_logic/login_stream.dart';
 import 'package:newsprovider/src/theme/tema.dart';
@@ -10,9 +11,12 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+   final prefs = new PreferenciasUsuario();
+   prefs.ultimaPagina='registro';
+
     return Scaffold(
       body: Stack(
-         
          children: <Widget>[
            _crearFondo(context),
            _loginForm(context)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsprovider/src/pages/tab1_page.dart';
 import 'package:newsprovider/src/pages/tab2_page.dart';
+import 'package:newsprovider/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:newsprovider/src/theme/tema.dart';
 import 'package:newsprovider/src/widgets/menu_widget.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,10 @@ class TabsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final prefs = new PreferenciasUsuario();
+    
+    prefs.ultimaPagina='/';
+
     return ChangeNotifierProvider(
       create: (_)=> new _NavegacionModel(),
       child: Scaffold(

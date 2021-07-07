@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsprovider/src/pages/login_page.dart';
 import 'package:newsprovider/src/pages/registro_page.dart';
 import 'package:newsprovider/src/pages/tabs_page.dart';
+import 'package:newsprovider/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:newsprovider/src/services/news_service.dart';
 import 'package:newsprovider/src/services/usuario_service.dart';
 import 'package:newsprovider/src/steams_logic/login_stream.dart';
@@ -10,13 +11,15 @@ import 'package:provider/provider.dart';
  
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  final prefs = new PreferenciasUsuario();
+  prefs.initPrefs();
   runApp(MyApp());
   }
  
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
+    final prefs  = new PreferenciasUsuario();
     final pStream = LoginStream();
     return MultiProvider(
         providers: [
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
           title: 'Material App',
           debugShowCheckedModeBanner: false,
           theme: miTema,
-          initialRoute: 'login',
+          initialRoute: prefs.ultimaPagina,
           routes: {
             '/' : (BuildContext context) => TabsPage(),
             'login' : (BuildContext context) => LoginPage(),

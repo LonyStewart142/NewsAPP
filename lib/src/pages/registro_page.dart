@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:newsprovider/src/services/usuario_service.dart';
+import 'package:newsprovider/src/preferencias_usuario/preferencias_usuario.dart';
+ import 'package:newsprovider/src/services/usuario_service.dart';
 import 'package:newsprovider/src/steams_logic/login_stream.dart';
 import 'package:newsprovider/src/theme/tema.dart';
 import 'package:newsprovider/src/utils/utils.dart';
@@ -7,9 +8,12 @@ import 'package:newsprovider/src/utils/utils.dart';
 class RegistroPage extends StatelessWidget {
 
   final uProvider = new UsuarioService();
-
+   
   @override
   Widget build(BuildContext context) {
+   final prefs = new PreferenciasUsuario();
+   prefs.ultimaPagina='registro';
+    
     return Scaffold(
       body: Stack(
          
