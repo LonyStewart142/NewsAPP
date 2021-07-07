@@ -32,7 +32,7 @@ class NewsService with ChangeNotifier{
    categorys.forEach((item) { 
      this.categoryArticles[item.name] = [];
    });
-this.getArticlesByCategory('business');
+    this.getArticlesByCategory('business');
 
   }
 

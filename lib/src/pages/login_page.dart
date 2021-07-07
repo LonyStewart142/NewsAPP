@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:newsprovider/src/services/usuario_service.dart';
+import 'package:newsprovider/src/steams_logic/login_stream.dart';
 import 'package:newsprovider/src/theme/tema.dart';
 import 'package:newsprovider/src/utils/utils.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+
+  final uProvider = new UsuarioService();
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +25,11 @@ class LoginPage extends StatelessWidget {
 _loginForm(BuildContext context){
  
   final size = MediaQuery.of(context).size;
-  
+  final loginStream = new LoginStream(); 
   return SingleChildScrollView(
      child: Column(
        children: <Widget>[
-         SafeArea(child: Container(height:100.0)),
+         SafeArea(child: Container(height:180.0)),
          Container(
            width: size.width * 0.85,
            padding: EdgeInsets.symmetric(vertical:30.0),
@@ -47,54 +50,78 @@ _loginForm(BuildContext context){
              children: <Widget>[
                Text('Ingresos tus credencias',style: TextStyle(fontSize: 20.0),),
                SizedBox(height: 50.0,),
-               _crearEmail(),
+               _crearEmail(loginStream),
                SizedBox(height: 25.0,),
-               _crearPassword(),
+               _crearPassword(loginStream),
                SizedBox(height: 25.0,),
-               _crearBotonSubmit()
-               
+               _crearBotonSubmit(loginStream)
              ],
            ),
-         )
+         ),
+
+         TextButton(
+           child: Text('Crear nueva cuenta'),
+           onPressed: ()=>Navigator.pushReplacementNamed(context, 'registro'),
+           )
        ],
      ),
   );
 }
 
 
-Widget _crearEmail(){
+Widget _crearEmail(LoginStream lStream){
 
-return Container(
-  padding: EdgeInsets.symmetric(horizontal:20.0),
-  child: TextField(
-    keyboardType: TextInputType.emailAddress,
-    decoration: InputDecoration(
-      icon: Icon(Icons.email_outlined,color: Colors.black54,),
-      labelText: 'Correo Electronico',
-      hintText: 'ejemplo@correo.com'
-    ),
-  ),
+return StreamBuilder(
+  stream: lStream.emailStream,
+  builder: (BuildContext context,AsyncSnapshot snapshot){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal:20.0),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          icon: Icon(Icons.email_outlined,color: Colors.black54,),
+          labelText: 'Correo Electronico',
+          hintText: 'ejemplo@correo.com',
+          counterText: snapshot.data,
+          errorText: snapshot.error
+        ),
+        onChanged: lStream.changeEmail,
+      ),
 
-);
+    );
+  });
 }
 
-Widget _crearPassword(){
+Widget _crearPassword(LoginStream lStream){
 
-  return Container(
+
+  return StreamBuilder(
+    stream: lStream.passwordStream,
+    builder: (BuildContext context,AsyncSnapshot snapshot){
+    return  Container(
      padding: EdgeInsets.symmetric(horizontal:20.0),
      child: TextField(
+       obscureText: true,
        keyboardType: TextInputType.emailAddress,
        decoration: InputDecoration(
          icon: Icon(Icons.lock_outline,color: Colors.black54,), 
          labelText: 'Password',
-   
+          counterText: snapshot.data,
+          errorText: snapshot.error
        ),
+       onChanged: lStream.changePassword,
      ),
 
   );
+  });
+ 
 }
 
- Widget _crearBotonSubmit(){
+ Widget _crearBotonSubmit(LoginStream lStream){
+
+   return StreamBuilder(
+     stream: lStream.formValidState,
+    builder: (BuildContext context,AsyncSnapshot snapshot){
    return RaisedButton(
        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 80.0,vertical: 15.0),
@@ -105,8 +132,10 @@ Widget _crearPassword(){
        ),
        color: miTema.accentColor,
        textColor: Colors.white,
-       onPressed: (){},
+       onPressed: snapshot.hasData?  (){_login(context, lStream);} : null,
    );
+   });
+
  }
 
 
@@ -157,5 +186,16 @@ Widget _crearPassword(){
        )
        ],
     );
+  }
+
+  _login(BuildContext context,LoginStream lStream) async{
+
+   Map info = await uProvider.login(lStream.email, lStream.password);
+   
+   if(info['ok']){
+     Navigator.pushReplacementNamed(context, '/');
+   }else{
+     mostrarAlerta(context, info['mensaje']);
+   }
   }
 }
