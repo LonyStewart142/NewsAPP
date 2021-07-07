@@ -46,7 +46,7 @@ class UsuarioService with ChangeNotifier{
    };
 
 
-   final  url  =  Uri.parse(_urlBase+'accounts:signUp?key=$_firebaseKey');
+   final  url  =  Uri.parse(_urlBase+':signUp?key=$_firebaseKey');
 
    final resp =  await http.post(
      url,
